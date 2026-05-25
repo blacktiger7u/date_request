@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ważne pytanie 🌸</title>
+  <style>
+    body {
+      margin: 0; padding: 0;
+      display: flex; justify-content: center; align-items: center;
+      height: 100vh;
+      background-color: #fdf2f8; /* Jasnoróżowy, pastelowy background */
+      font-family: 'Comic Sans MS', 'Arial', sans-serif;
+      color: #831843;
+      overflow: hidden;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+    }
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    h1 { font-size: 1.5rem; margin-bottom: 20px; }
+
+    .btn-group { display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap; }
+
+    button {
+      background-color: #fbcfe8;
+      border: none; padding: 12px 24px;
+      border-radius: 20px; font-weight: bold;
+      color: #831843; cursor: pointer;
+      font-size: 1rem; transition: 0.2s;
+    }
+    button:hover { background-color: #f9a8d4; }
+
+    /* Uciekający przycisk NIE */
+    #btn-no { position: absolute; transition: 0.1s; }
+
+    .inputs { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+    input, select {
+      padding: 10px; border-radius: 10px;
+      border: 1px solid #fbcfe8; font-family: inherit;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div id="step-1" class="screen active">
+    <img src="https://media.tenor.com/efO1i7xXn60AAAAi/cat-peach.gif" width="150" style="border-radius: 15px;">
+    <h1>Pójdziesz ze mną na randkę? 🌸</h1>
+    <div class="btn-group" style="position: relative; height: 50px;">
+      <button onclick="nextStep(2)">TAK 💕</button>
+      <button id="btn-no" style="right: 20px;">nie...</button>
+    </div>
+  </div>
+
+  <div id="step-2" class="screen">
+    <h1>Super! Kiedy masz czas? 📅</h1>
+    <div class="inputs">
+      <input type="date" id="date" required>
+      <input type="time" id="time" required>
+    </div>
+    <div class="btn-group">
+      <button onclick="saveDateAndNext()">Dalej ➡</button>
+    </div>
+  </div>
+
+  <div id="step-3" class="screen">
+    <h1>Na co masz ochotę? ✨</h1>
+    <div class="btn-group">
+      <button onclick="selectCategory('Jedzenie')">🍕 Jedzenie</button>
+      <button onclick="selectCategory('Kino')">🎬 Kino</button>
+      <button onclick="selectCategory('Spacer')">🌳 Spacer / Chill</button>
+    </div>
+  </div>
+
+  <div id="step-4" class="screen">
+    <h1 id="specific-question">A dokładnie gdzie? 🤔</h1>
+    <div id="specific-options" class="btn-group">
+    </div>
+  </div>
+
+  <div id="step-5" class="screen">
+    <img src="https://media.tenor.com/QkGIOQv-1HwAAAAi/shrek-rizz.gif" width="150" style="border-radius: 15px;">
+    <h1>Zapisane! Bądź gotowa. 🚗</h1>
+    <p style="font-size: 0.8rem; color: gray;">P.S. Odezwe się z potwierdzeniem!</p>
+  </div>
+
+</div>
+
+<script>
+  // Zmienne do przechowywania wyborów
+  let finalData = {
+    date: "",
+    time: "",
+    category: "",
+    specificChoice: ""
+  };
+
+  // SZABLONY WYBORÓW - [TUTAJ ZMIEŃ NA SWOJE LOKALE/FILMY]
+  const optionsData = {
+    "Jedzenie": ["Sushi 🍣", "Włoska (Pizza/Makaron) 🍕", "Burgery 🍔", "Coś słodkiego 🍰"],
+    "Kino": ["Komedio-dramat 🎭", "Horror 👻", "Akcja 💥", "Animacja 🐸"],
+    "Spacer": ["Park 🌲", "Stare Miasto 🏛️", "Przejażdżka autem 🚗"]
+  };
+
+  // Funkcja uciekającego przycisku "NIE"
+  const btnNo = document.getElementById('btn-no');
+  btnNo.addEventListener('mouseover', () => {
+    const container = document.querySelector('.container');
+    const maxX = container.clientWidth - btnNo.clientWidth - 40;
+    const maxY = container.clientHeight - btnNo.clientHeight - 40;
+
+    const randomX = Math.floor(Math.random() * maxX);
+    const randomY = Math.floor(Math.random() * maxY);
+
+    btnNo.style.left = `${randomX}px`;
+    btnNo.style.top = `${randomY}px`;
+  });
+
+  // Przechodzenie między ekranami
+  function nextStep(stepNumber) {
+    document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+    document.getElementById(`step-${stepNumber}`).classList.add('active');
+  }
+
+  // Zapis daty i przejście dalej
+  function saveDateAndNext() {
+    const dateInput = document.getElementById('date').value;
+    const timeInput = document.getElementById('time').value;
+
+    if(!dateInput || !timeInput) {
+      alert("Wybierz datę i godzinę!");
+      return;
+    }
+    finalData.date = dateInput;
+    finalData.time = timeInput;
+    nextStep(3);
+  }
+
+  // Wybór kategorii i wygenerowanie konkretnych opcji
+  function selectCategory(category) {
+    finalData.category = category;
+    const specificOptionsDiv = document.getElementById('specific-options');
+    specificOptionsDiv.innerHTML = ""; // Czyści poprzednie
+
+    // Generuje przyciski na podstawie obiektu optionsData
+    optionsData[category].forEach(option => {
+      const btn = document.createElement('button');
+      btn.innerText = option;
+      btn.onclick = () => finishAndSend(option);
+      specificOptionsDiv.appendChild(btn);
+    });
+
+    nextStep(4);
+  }
+
+  // Zakończenie i WYSŁANIE DANYCH
+  function finishAndSend(specificChoice) {
+    finalData.specificChoice = specificChoice;
+    nextStep(5);
+
+    // [TUTAJ WKLEJ LINK DO SWOJEGO DISCORD WEBHOOKA]
+    const WEBHOOK_URL = "TWÓJ_LINK_DO_WEBHOOKA_TUTAJ";
+
+    const message = {
+      content: `🚨 **MAMY RANDKĘ!** 🚨\n\n**Kiedy:** ${finalData.date} o ${finalData.time}\n**Kategoria:** ${finalData.category}\n**Wybór:** ${finalData.specificChoice}`
+    };
+
+    if(WEBHOOK_URL !== "TWÓJ_LINK_DO_WEBHOOKA_TUTAJ") {
+      fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(message)
+      }).catch(err => console.error("Błąd wysyłania:", err));
+    }
+  }
+</script>
+</body>
+</html>
