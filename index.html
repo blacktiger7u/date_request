@@ -2,52 +2,77 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ważne pytanie 🌸</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>pls say yes</title>
   <style>
     body {
       margin: 0; padding: 0;
       display: flex; justify-content: center; align-items: center;
-      height: 100vh;
-      background-color: #fdf2f8; /* Jasnoróżowy, pastelowy background */
+      min-height: 100vh;
+      background: linear-gradient(-45deg, #fbcfe8, #fdf2f8, #fecdd3, #fff1f2);
+      background-size: 400% 400%;
+      animation: gradientBG 10s ease infinite;
       font-family: 'Comic Sans MS', 'Arial', sans-serif;
       color: #831843;
-      overflow: hidden;
+      overflow-x: hidden;
     }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
     .container {
-      background: white;
-      padding: 40px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px 20px;
       border-radius: 20px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
       text-align: center;
-      max-width: 500px;
+      max-width: 400px;
       width: 90%;
       position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
     }
+
     .screen { display: none; }
-    .screen.active { display: block; }
+    .screen.active { display: block; animation: fadeIn 0.4s; }
 
-    h1 { font-size: 1.5rem; margin-bottom: 20px; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-    .btn-group { display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap; }
+    h1 { font-size: 1.4rem; margin-bottom: 20px; line-height: 1.3; }
+
+    .btn-group { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; align-items: center; }
+
+    .btn-row { display: flex; justify-content: space-between; width: 100%; position: relative; height: 50px; }
 
     button {
       background-color: #fbcfe8;
-      border: none; padding: 12px 24px;
+      border: none; padding: 15px 25px;
       border-radius: 20px; font-weight: bold;
       color: #831843; cursor: pointer;
-      font-size: 1rem; transition: 0.2s;
+      font-size: 1.1rem; transition: 0.2s;
+      width: 100%; max-width: 250px;
     }
-    button:hover { background-color: #f9a8d4; }
+    button:active { background-color: #f9a8d4; transform: scale(0.95); }
 
-    /* Uciekający przycisk NIE */
-    #btn-no { position: absolute; transition: 0.1s; }
+    /* FIX na przyciski T/N w pierwszym kroku */
+    #btn-yes { position: absolute; left: 5%; width: auto; z-index: 2; }
+    #btn-no { position: absolute; right: 5%; width: auto; transition: 0.2s ease-out; z-index: 1; }
 
     .inputs { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
     input, select {
-      padding: 10px; border-radius: 10px;
+      padding: 15px; border-radius: 10px;
       border: 1px solid #fbcfe8; font-family: inherit;
+      font-size: 1rem; width: 100%; box-sizing: border-box;
+      background-color: #fff;
     }
+
+    #custom-input-div { display: none; flex-direction: column; gap: 10px; margin-top: 20px; }
   </style>
 </head>
 <body>
@@ -55,19 +80,36 @@
 <div class="container">
 
   <div id="step-1" class="screen active">
-    <img src="https://media.tenor.com/efO1i7xXn60AAAAi/cat-peach.gif" width="150" style="border-radius: 15px;">
-    <h1>Pójdziesz ze mną na randkę? 🌸</h1>
-    <div class="btn-group" style="position: relative; height: 50px;">
-      <button onclick="nextStep(2)">TAK 💕</button>
-      <button id="btn-no" style="right: 20px;">nie...</button>
+    <img src="https://imgs.search.brave.com/2iwPAWniJfd-nF-4dZG_8knR13iW6waicBISFSf8RI8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS50ZW5vci5jb20v/dWw3d2lLQmk2VEFB/QUFBTS9zdXNwaWNp/b3VzLWtldmluLWhh/cnQuZ2lm.gif" width="150" style="border-radius: 15px;">
+    <h1>halo cześć dominika, czy chciałabyś ze mną pójść na randkę w przyszłym tygodniu?</h1>
+    <div class="btn-row">
+      <button id="btn-yes" onclick="nextStep('1-placeholder')">TAK 💕</button>
+      <button id="btn-no">nie...</button>
+    </div>
+  </div>
+
+  <div id="step-1-placeholder" class="screen">
+    <img src="https://imgs.search.brave.com/YDt0p2nf69A-b5ApSQ_MaPxFosvIWG_TaGgKcbltNh8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YTAuZ2lwaHkuY29t/L21lZGlhL3YxLlky/bGtQVGM1TUdJM05q/RXhOWGRrTUdSbU9U/SmhOamRvYkhvNWRU/SXplR3cxZURoMWVq/Wm5ZMjB6WlhkNU16/YzFPWGQzTnlabGNE/MTJNVjluYVdaelgz/TmxZWEpqYUNaamRE/MW4vZFEyaE50NE1W/Ymd1WjV5dTRNLzIw/MC5naWY.gif" width="150" style="border-radius: 15px;">
+    <h1>AINT NO WAYYY</h1>
+    <p>WYGRAŁA UCZCIWOŚĆ</p>
+    <div class="btn-group">
+      <button onclick="nextStep(2)">kliknij tu pls ➡</button>
     </div>
   </div>
 
   <div id="step-2" class="screen">
-    <h1>Super! Kiedy masz czas? 📅</h1>
+    <h1>kiedy ci pasuje? 📅</h1>
     <div class="inputs">
-      <input type="date" id="date" required>
-      <input type="time" id="time" required>
+      <input type="date" id="date" min="2026-05-31" max="2026-06-06" required>
+
+      <select id="time" required>
+        <option value="" disabled selected>Wybierz godzinę...</option>
+        <option value="17:00">17:00</option>
+        <option value="17:30">17:30</option>
+        <option value="18:00">18:00</option>
+        <option value="18:30">18:30</option>
+        <option value="19:00">19:00</option>
+      </select>
     </div>
     <div class="btn-group">
       <button onclick="saveDateAndNext()">Dalej ➡</button>
@@ -75,114 +117,204 @@
   </div>
 
   <div id="step-3" class="screen">
-    <h1>Na co masz ochotę? ✨</h1>
+    <h1>CO CHCIAŁABYŚ POROBIĆ ✨</h1>
     <div class="btn-group">
-      <button onclick="selectCategory('Jedzenie')">🍕 Jedzenie</button>
-      <button onclick="selectCategory('Kino')">🎬 Kino</button>
-      <button onclick="selectCategory('Spacer')">🌳 Spacer / Chill</button>
+      <button onclick="selectCategory('Jedzenie')">pójść coś zjeść</button>
+      <button onclick="selectCategory('Film')">obejrzeć film</button>
+      <button onclick="selectCategory('Content')">contencik</button>
+    </div>
+  </div>
+
+  <div id="step-movie-location" class="screen">
+    <img src="https://imgs.search.brave.com/5J3lK2oPidLux3rFbHlLiiW2RAxTYHmaj_IZ0xHIrbI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YTEudGVub3IuY29t/L20vVFAxTDFGRkVy/b1FBQUFBZC93aWxs/LWl0LXdvcmsuZ2lm.gif" width="150" style="border-radius: 15px; margin-bottom: 10px;">
+    <h1>Gdzie oglądamy? 🍿</h1>
+    <div class="btn-group">
+      <button onclick="selectSubCategory('Film', 'Kino')">cinema</button>
+      <button onclick="selectSubCategory('Film', 'Dom')">na chacie u mn/u cb</button>
     </div>
   </div>
 
   <div id="step-4" class="screen">
-    <h1 id="specific-question">A dokładnie gdzie? 🤔</h1>
+    <img id="category-main-img" src="" width="150" style="border-radius: 15px; margin-bottom: 10px; display: none;">
+    <h1 id="specific-question">a co konkretniej??</h1>
     <div id="specific-options" class="btn-group">
+    </div>
+
+    <div id="custom-input-div">
+      <input type="text" id="custom-suggestion" placeholder="Napisz swój pomysł...">
+      <button onclick="submitCustomSuggestion()">Potwierdź</button>
     </div>
   </div>
 
   <div id="step-5" class="screen">
-    <img src="https://media.tenor.com/QkGIOQv-1HwAAAAi/shrek-rizz.gif" width="150" style="border-radius: 15px;">
-    <h1>Zapisane! Bądź gotowa. 🚗</h1>
-    <p style="font-size: 0.8rem; color: gray;">P.S. Odezwe się z potwierdzeniem!</p>
+    <img src="https://imgs.search.brave.com/-AjUNCb4-HmAqbBNJu5cb_jfJSkWPOrE-zJm9esggbo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93aXR0/eWNvbXBhbmlvbi5j/b20vd3AtY29udGVu/dC91cGxvYWRzLzIw/MjEvMDYvdW5kZXJz/dGFuZGFibGUtaGF2/ZS1hLW5pY2UtZGF5/LTEuanBn" width="300" style="border-radius: 15px;">
+    <h1>wszystko już wiem!! see you soon niga</h1>
+    <p style="font-size: 0.9rem; color: gray;">funfact: aby pokazać kontrolę nad swoim terytorium hipopotam(samiec) sra do wody w której pływa i wiruje wokół by rozprzestrzenić zapach w wodzie </p>
   </div>
 
 </div>
 
 <script>
-  // Zmienne do przechowywania wyborów
   let finalData = {
-    date: "",
-    time: "",
-    category: "",
-    specificChoice: ""
+    date: "", time: "", category: "", subCategory: "", specificChoice: ""
   };
 
-  // SZABLONY WYBORÓW - [TUTAJ ZMIEŃ NA SWOJE LOKALE/FILMY]
+  // --- ZDJĘCIA GŁÓWNE DLA KATEGORII NA SLAJDZIE NR 4 ---
+  const categoryImages = {
+    "Jedzenie": "bruh.jpg",
+    "Film": "https://imgs.search.brave.com/LF63BUNNrm3LMjaTEjrAtvNbMmjQ3bOE18JZ8xefPug/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YTEuZ2lwaHkuY29t/L21lZGlhL3YxLlky/bGtQVGM1TUdJM05q/RXhNRFUwZDNWemVX/Vm5NMlo0YVdGa2Ju/UnNlRFp4WjNabE1X/TTVZemMwWW1ObmJI/TnRkM2swYVNabGNE/MTJNVjluYVdaelgz/TmxZWEpqYUNaamRE/MW4veVR4RkNkRHg3/UjlVOGhpN2xkLzIw/MC5naWY.gif",
+    "Content": "https://imgs.search.brave.com/LF63BUNNrm3LMjaTEjrAtvNbMmjQ3bOE18JZ8xefPug/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YTEuZ2lwaHkuY29t/L21lZGlhL3YxLlky/bGtQVGM1TUdJM05q/RXhNRFUwZDNWemVX/Vm5NMlo0YVdGa2Ju/UnNlRFp4WjNabE1X/TTVZemMwWW1ObmJI/TnRkM2swYVNabGNE/MTJNVjluYVdaelgz/TmxZWEpqYUNaamRE/MW4veVR4RkNkRHg3/UjlVOGhpN2xkLzIw/MC5naWY.gif"
+  };
+
+  // --- BAZA WYBORÓW (CZYSTY TEKST) ---
   const optionsData = {
-    "Jedzenie": ["Sushi 🍣", "Włoska (Pizza/Makaron) 🍕", "Burgery 🍔", "Coś słodkiego 🍰"],
-    "Kino": ["Komedio-dramat 🎭", "Horror 👻", "Akcja 💥", "Animacja 🐸"],
-    "Spacer": ["Park 🌲", "Stare Miasto 🏛️", "Przejażdżka autem 🚗"]
+    "Jedzenie": ["możemy coś ugotować!!(ni chuja nie umiem) ", "pizza", "Burgery","kebab","TWOJA SUGESTIA"],
+    "Content": ["bowling ", "minigolf ", "bilard ","hangout u mn/u cb na chacie", "TWOJA SUGESTIA"],
+    "Film": {
+      "Dom": ["Green Mile", "La La Land(NIE OGLĄDAŁEM OK)", "Parasite", "TWOJA SUGESTIA"],
+      "Kino": ["Gwiezdne Wojny: Mandalorian i Grogu", "Tom i Jerry: Przygoda w muzeum", "TWOJA SUGESTIA(nie ma nic ciekawego...)"]
+    }
   };
 
-  // Funkcja uciekającego przycisku "NIE"
   const btnNo = document.getElementById('btn-no');
-  btnNo.addEventListener('mouseover', () => {
+  const moveBtn = (e) => {
+    e.preventDefault();
     const container = document.querySelector('.container');
-    const maxX = container.clientWidth - btnNo.clientWidth - 40;
-    const maxY = container.clientHeight - btnNo.clientHeight - 40;
 
-    const randomX = Math.floor(Math.random() * maxX);
-    const randomY = Math.floor(Math.random() * maxY);
+    const maxX = container.clientWidth - btnNo.clientWidth - 20;
+    const maxY = container.clientHeight - btnNo.clientHeight - 20;
 
-    btnNo.style.left = `${randomX}px`;
-    btnNo.style.top = `${randomY}px`;
-  });
+    const randomX = Math.random() * maxX - (container.clientWidth / 2 - btnNo.clientWidth / 2);
+    const randomY = Math.random() * maxY - (container.clientHeight / 2 - btnNo.clientHeight / 2);
 
-  // Przechodzenie między ekranami
-  function nextStep(stepNumber) {
-    document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
-    document.getElementById(`step-${stepNumber}`).classList.add('active');
+    btnNo.style.transform = `translate(${randomX}px, ${randomY}px)`;
+  };
+
+  btnNo.addEventListener('mouseover', moveBtn);
+  btnNo.addEventListener('touchstart', moveBtn);
+
+  function nextStep(stepId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(`step-${stepId}`).classList.add('active');
   }
 
-  // Zapis daty i przejście dalej
   function saveDateAndNext() {
-    const dateInput = document.getElementById('date').value;
-    const timeInput = document.getElementById('time').value;
+    const d = document.getElementById('date').value;
+    const t = document.getElementById('time').value;
 
-    if(!dateInput || !timeInput) {
-      alert("Wybierz datę i godzinę!");
+    if(!d || !t) {
+      alert("halo wybierz date i godzine!");
       return;
     }
-    finalData.date = dateInput;
-    finalData.time = timeInput;
+    finalData.date = d;
+    finalData.time = t;
     nextStep(3);
   }
 
-  // Wybór kategorii i wygenerowanie konkretnych opcji
   function selectCategory(category) {
     finalData.category = category;
-    const specificOptionsDiv = document.getElementById('specific-options');
-    specificOptionsDiv.innerHTML = ""; // Czyści poprzednie
 
-    // Generuje przyciski na podstawie obiektu optionsData
-    optionsData[category].forEach(option => {
-      const btn = document.createElement('button');
-      btn.innerText = option;
-      btn.onclick = () => finishAndSend(option);
-      specificOptionsDiv.appendChild(btn);
-    });
+    // Podmiana głównego zdjęcia na ekranie 4
+    const mainImg = document.getElementById('category-main-img');
+    mainImg.src = categoryImages[category];
+    mainImg.style.display = "inline";
 
+    if(category === "Film") {
+      nextStep('movie-location');
+    } else {
+      renderOptions(optionsData[category]);
+      nextStep(4);
+    }
+  }
+
+  function selectSubCategory(mainCat, subCat) {
+    finalData.subCategory = subCat;
+    renderOptions(optionsData[mainCat][subCat]);
     nextStep(4);
   }
 
-  // Zakończenie i WYSŁANIE DANYCH
-// Zakończenie i WYSŁANIE DANYCH
-function finishAndSend(specificChoice) {
-    finalData.specificChoice = specificChoice;
+  function renderOptions(optionsArray) {
+    const div = document.getElementById('specific-options');
+    div.innerHTML = "";
+    document.getElementById('custom-input-div').style.display = "none";
+
+    optionsArray.forEach(option => {
+      const btn = document.createElement('button');
+      btn.innerText = option;
+
+      // Obsługa customowej opcji
+      if(option.startsWith("TWOJA SUGESTIA")) {
+        btn.onclick = () => showCustomInput();
+      } else {
+        btn.onclick = () => finishAndSend(option);
+      }
+      div.appendChild(btn);
+    });
+  }
+
+  function showCustomInput() {
+    document.getElementById('specific-options').style.display = "none";
+    document.getElementById('custom-input-div').style.display = "flex";
+  }
+
+  function submitCustomSuggestion() {
+    const val = document.getElementById('custom-suggestion').value;
+    if(!val) {
+      alert("676767");
+      return;
+    }
+    finishAndSend(`WŁASNA SUGESTIA: ${val}`);
+  }
+
+  function finishAndSend(choice) {
+    finalData.specificChoice = choice;
     nextStep(5);
 
+    // [!!!] TUTAJ WKLEJ SWÓJ LINK DO WEBHOOKA (W CUDZYSŁOWACH) [!!!]
     const WEBHOOK_URL = "https://discord.com/api/webhooks/1508585625354375320/TKbUgMsZbWldN1tAt5FdQzD2KI2tq8vwKaXQJ9CrL4fCtz78KuQMnkUH4c2XP2I1HJVo";
 
+    // Formatowanie kategorii (dodanie info czy kino czy dom, jeśli to film)
+    let catText = finalData.category;
+    if(finalData.category === "Film") {
+      catText = `Film (${finalData.subCategory})`;
+    }
+
+    // Nowa, ładniejsza wiadomość Discord (Rich Embed)
     const message = {
-        content: `🚨 **MAMY RANDKĘ!** 🚨\n\n**Kiedy:** ${finalData.date} o ${finalData.time}\n**Kategoria:** ${finalData.category}\n**Wybór:** ${finalData.specificChoice}`
+      content: "🚨 **ITS BEEN A LONG TIME COMING! DOMINIKA WYPEŁNIŁA FORMULARZ!** 🚨",
+      embeds: [{
+        title: "💖 Szczegóły spotkania",
+        color: 16485072, // Pastelowy, różowy kolor paska bocznego
+        fields: [
+          {
+            name: "📅 Kiedy?",
+            value: `**${finalData.date}** o godzinie **${finalData.time}**`,
+            inline: false
+          },
+          {
+            name: "✨ Co robimy?",
+            value: `**${catText}**`,
+            inline: false
+          },
+          {
+            name: "🎯 Konkretny wybór:",
+            value: `**${finalData.specificChoice}**`,
+            inline: false
+          }
+        ],
+        footer: {
+          text: "Zanotowane w systemie 🌸"
+        },
+        timestamp: new Date().toISOString() // Doda na dole dokładną datę i godzinę wysłania
+      }]
     };
 
-    // Wysyłamy bezpośrednio, bez żadnego blokującego "if"
     fetch(WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(message)
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(message)
     }).catch(err => console.error("Błąd wysyłania:", err));
-}
+  }
 </script>
 </body>
 </html>
