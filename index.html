@@ -274,11 +274,11 @@
     finishAndSend(`WŁASNA SUGESTIA: ${val}`);
   }
 
-  function finishAndSend(choice) {
+function finishAndSend(choice) {
     finalData.specificChoice = choice;
     nextStep(5);
 
-    // [!!!] TUTAJ WKLEJ SWÓJ LINK DO WEBHOOKA (W CUDZYSŁOWACH) [!!!]
+    // Twój link Webhooka
     const WEBHOOK_URL = "https://discord.com/api/webhooks/1508585625354375320/TKbUgMsZbWldN1tAt5FdQzD2KI2tq8vwKaXQJ9CrL4fCtz78KuQMnkUH4c2XP2I1HJVo";
 
     let catText = finalData.category;
@@ -287,7 +287,7 @@
     }
 
     const message = {
-      content: "🚨 **ITS BEEN A LONG TIME COMING** 🚨",
+      content: "🚨 **ITS BEEN A LONG TIME COMING!** 🚨",
       embeds: [{
         title: "Szczegóły hangoutu",
         color: 16485072,
@@ -301,13 +301,20 @@
       }]
     };
 
-    if(WEBHOOK_URL !== "https://discord.com/api/webhooks/1508585625354375320/TKbUgMsZbWldN1tAt5FdQzD2KI2tq8vwKaXQJ9CrL4fCtz78KuQMnkUH4c2XP2I1HJVo") {
-      fetch(WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(message)
-      }).catch(err => console.error("Błąd wysyłania:", err));
-    }
+    // WYSYŁANIE BEZPOŚREDNIE (Usunięto blokujący warunek if)
+    fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(message)
+    })
+    .then(response => {
+        if (!response.ok) console.error("Discord zwrócił błąd:", response.status);
+        else console.log("Wiadomość wysłana!");
+    })
+    .catch(err => {
+        console.error("Błąd sieciowy:", err);
+        alert("Wystąpił błąd! Sprawdź czy nie masz AdBlocka/Brave Shields aktywnego na tej stronie.");
+    });
   }
 </script>
 </body>
