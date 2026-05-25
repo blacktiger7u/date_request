@@ -170,13 +170,13 @@
     nextStep(5);
 
     // [TUTAJ WKLEJ LINK DO SWOJEGO DISCORD WEBHOOKA]
-    const WEBHOOK_URL = "TWÓJ_LINK_DO_WEBHOOKA_TUTAJ";
+    const WEBHOOK_URL = "https://discord.com/api/webhooks/1508585625354375320/TKbUgMsZbWldN1tAt5FdQzD2KI2tq8vwKaXQJ9CrL4fCtz78KuQMnkUH4c2XP2I1HJVo";
 
     const message = {
       content: `🚨 **MAMY RANDKĘ!** 🚨\n\n**Kiedy:** ${finalData.date} o ${finalData.time}\n**Kategoria:** ${finalData.category}\n**Wybór:** ${finalData.specificChoice}`
     };
 
-    if(WEBHOOK_URL !== "TWÓJ_LINK_DO_WEBHOOKA_TUTAJ") {
+    if(WEBHOOK_URL !== "https://discord.com/api/webhooks/1508585625354375320/TKbUgMsZbWldN1tAt5FdQzD2KI2tq8vwKaXQJ9CrL4fCtz78KuQMnkUH4c2XP2I1HJVo") {
       fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
