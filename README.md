@@ -1,5 +1,5 @@
 # 💌 date invitation app
-
+[!CAUTION]
 > **Disclaimer:** The default text and UI inside the `index.html` file are in **Polish**. However, you can easily translate the headings and button labels to English (or any other language) directly in the code!
 
 basic and interactive website which is used for asking sb out on a date. Site allows the girl to select time, date and activity! All info is sent through discord channel using webhook
